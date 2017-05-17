@@ -13,11 +13,66 @@
 </head>
 <body>
 
+<!-- layout -->
+<!-- 1. create an element for our table.
+	a. make it green.
+	b. give it a white border.
+2. create an element for the dealer's hand and player's hand.
+3. create an element for the player's and dealer's total.
+4. create an element for each card in each hand max of 6.
+5. make a deal hit and stand button. -->
+
 	<div class="container">
 
 		<div class="row">
-			<div class="col-sm-12">
-				<h1>magenta</h1>
+			<div class="col-sm-12 the-table">
+
+				<div class="row dealer-hand-wrapper">
+					<div class="col-sm-12">
+						<div class="col-sm-2 dealer-total">
+							Dealer Total: <span class="dealer-score">0</span>
+						</div>
+						<div class="col-sm-10 dealer-cards">
+							<div class="card card-1"></div>
+							<div class="card card-2"></div>
+							<div class="card card-3"></div>
+							<div class="card card-4"></div>
+							<div class="card card-5"></div>
+							<div class="card card-6"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="game-text"></div>
+				
+				<div class="row player-hand-wrapper">
+					<div class="col-sm-12">
+						<div class="col-sm-2 player-total">
+							Player Total: <span class="player-score">0</span>
+						</div>
+						<div class="col-sm-10 player-cards">
+							<div class="card card-1"></div>
+							<div class="card card-2"></div>
+							<div class="card card-3"></div>
+							<div class="card card-4"></div>
+							<div class="card card-5"></div>
+							<div class="card card-6"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-2 col-sm-offset-3">
+						<button class="btn btn-primary deal-button">Deal</button>
+					</div>
+					<div class="col-sm-2 col-sm-offset-1">
+						<button class="btn btn-danger hit-button">Hit</button>
+					</div>
+					<div class="col-sm-2 col-sm-offset-1">
+						<button class="btn btn-warning stand-button">Stand</button>
+					</div>
+				</div>
+
 			</div>
 		</div>
 
