@@ -36,6 +36,7 @@ $(document).ready(function(){
 		placeCard('dealer',2,dealersHand[1]);
 		calculateTotal(playersHand,'player');
 		calculateTotal(dealersHand,'dealer');
+		checkBust();
 
 	});
 
@@ -55,6 +56,7 @@ $(document).ready(function(){
 			placeCard('dealer',dealersHand.length,dealersHand[dealersHand.length-1]);
 			calculateTotal(dealersHand,'dealer');
 		}
+		checkBust();
 
 	})
 
@@ -96,6 +98,22 @@ $(document).ready(function(){
 			$('.game-text').html('Tie game.');
 		}
 
+	}
+
+	function checkBust(){
+		var playerTotal = calculateTotal(playersHand, 'player');
+		var dealerTotal = calculateTotal(dealersHand, 'dealer');
+		if ((playerTotal == 21) && (playersHand.length == 2)){
+			$('.game-text').html('BLACKJACK! You win!');
+		}else if((dealerTotal == 21) && (dealersHand.length == 2)){
+			$('.game-text').html('Dealer wins with BLACKJACK!');
+		}else if (playerTotal > 21){
+			$('.game-text').html('BUST! You lose.');
+		}else if(dealerTotal > 21){
+			$('.game-text').html('Dealer busts! You win.');
+		}else{
+			return;
+		} 
 	}
 
 	function shuffleDeck(){
