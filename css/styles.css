@@ -18,6 +18,7 @@
 	float: left;
 	transition: all 4s ease;
 	margin-left: -164px;
+	transform-style: preserve-3d;
 }
 
 
@@ -77,10 +78,34 @@
 	transform: rotateZ(360deg);
 }
 
-.flipped{
-	transform: rotateY(360deg);
+.flipped-front{
+	transform: rotateY(-180deg);
+	z-index: 1;
+}
+.flipped-back{
+	transform: rotateY(180deg);
+	z-index: 1;
 }
 
-.buttons{
+.flipped {
+	transform: rotateY(180deg);
+}
 
+.front{
+	transform: rotateY(180deg);
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+
+}
+
+.back{
+	backface-visibility: hidden;
+	/*transform: rotateY(180deg);*/
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
 }

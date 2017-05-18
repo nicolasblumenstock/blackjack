@@ -41,10 +41,15 @@ $(document).ready(function(){
 	});
 
 	function placeCard(who,where,cardToPlace){
+		var classBack = '.' + who + '-cards .card-' + where + ' .back';
+		var classFront = '.' + who + '-cards .card-' + where + ' .front';
 		var classSelector = '.' + who + '-cards .card-' + where;
 		if ((who == 'dealer') && (cardToPlace !== dealersHand[0])){
-			$(classSelector).html('<img src="cards/cardback.jpg">');
+			$(classBack).html('<img src="cards/cardback.jpg">');
+			$(classFront).html('<img src="cards/' + cardToPlace + '.png">');
 			$(classSelector).addClass('dealt');
+			// $(classSelector).addClass('dealt');
+			// $(classFront).addClass('dealt');
 		}else{
 			$(classSelector).html('<img src="cards/' + cardToPlace + '.png">');
 			$(classSelector).addClass('dealt');
@@ -141,12 +146,15 @@ $(document).ready(function(){
 
 	function flipCards(){
 		for (let i = 1; i < dealersHand.length; i++){
-			var dealersCards = ".dealer-cards .card-" + (i+1)
-			var cardUsed = dealersHand[i];
-			var cardReplace = '<img src="cards/' + cardUsed + '.png">';
-			$(dealersCards).addClass('flipped');	
-
-			$(dealersCards).html(cardReplace);
+			var dealersCardsBack = ".dealer-cards .card-" + (i+1) + " .back"
+			var dealersCardsFront = ".dealer-cards .card-" + (i+1) + " .front"
+			var dealersCards = ".dealer-cards .card-" + (i+1);
+			// var cardUsed = dealersHand[i];
+			// var cardReplace = '<img src="cards/' + cardUsed + '.png">';
+			$(dealersCards).addClass('flipped');
+			$(dealersCardsBack).addClass('flipped-back');
+			$(dealersCardsFront).addClass('flipped-front');			
+			// $(dealersCards).html(cardReplace);
 								
 		}
 	}
