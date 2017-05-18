@@ -6,7 +6,7 @@
 	/*border-radius: 50%;*/
 	margin-top: 50px;
 	padding: 30px 0px;
-	height: 500px;
+	min-height: 550px;
 	transform: rotateX(35deg);
 }
 
@@ -16,13 +16,21 @@
 	margin: 10px 0px;
 	width: 12.6%;
 	float: left;
+	transition: all 4s ease;
+	margin-left: -164px;
 }
+
 
 .btn {
 	width: 80%;
 }
 
-.card img {
+.card img{
+	max-height: 150px;
+	border-radius: 5px;
+}
+
+.deck img {
 	max-height: 150px;
 	border-radius: 5px;
 }
@@ -30,8 +38,13 @@
 .dealer-total, .player-total {
 	color: white;
 	text-shadow: 0px 3px 5px black;
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
+	/*margin-left: 10px*/
+}
+
+.dealer-total{
+	margin-top: 85px;
 }
 
 .game-text{
@@ -47,4 +60,27 @@
 
 .table-skew {
 	perspective: 45em;
+}
+
+.deck {
+	height: 150px;
+	margin: 10px 5px;
+	/*float: left;*/
+}
+
+.info {
+	margin-left: 15px;
+}
+
+.dealt{
+	margin-left: 0px;
+	transform: rotateZ(360deg);
+}
+
+.flipped{
+	transform: rotateY(360deg);
+}
+
+.buttons{
+
 }

@@ -42,8 +42,13 @@ $(document).ready(function(){
 
 	function placeCard(who,where,cardToPlace){
 		var classSelector = '.' + who + '-cards .card-' + where;
-		$(classSelector).html('<img src="cards/' + cardToPlace + '.png">');
-
+		if ((who == 'dealer') && (cardToPlace !== dealersHand[0])){
+			$(classSelector).html('<img src="cards/cardback.jpg">');
+			$(classSelector).addClass('dealt');
+		}else{
+			$(classSelector).html('<img src="cards/' + cardToPlace + '.png">');
+			$(classSelector).addClass('dealt');
+		}
 	}
 
 	$('.hit-button').click(function(){
@@ -51,11 +56,6 @@ $(document).ready(function(){
 		placeCard('player',playersHand.length,playersHand[playersHand.length-1])
 		calculateTotal(playersHand,'player');
 		calculateTotal(dealersHand, 'dealer');
-		if ($('.dealer-score').html() < 17){
-			dealersHand.push(theDeck.shift());
-			placeCard('dealer',dealersHand.length,dealersHand[dealersHand.length-1]);
-			calculateTotal(dealersHand,'dealer');
-		}
 		checkBust();
 
 	})
@@ -63,25 +63,36 @@ $(document).ready(function(){
 	function calculateTotal(hand,who){
 		var total = 0;
 		var thisCardValue = 0;
-		var score = '.' + who + '-score';
-		var length = hand.length;
-		for(let i = 0; i < hand.length; i++){
+		var hasAce = false;
+		var numAces = 0;
+		var classSelector = '.' + who + '-score';
+		for (let i = 0; i < hand.length; i++){
 			thisCardValue = Number(hand[i].slice(0,-1));
-			if ((total == 10) && (thisCardValue == 1) && (length == 2)){
-				total = 21;
-			}else if (thisCardValue >= 10){
-				total += 10;
-			}else{
+			if (thisCardValue > 10){
+				thisCardValue = 10;
+			}else if(thisCardValue == 1){
+				hasAce = true;
+				numAces++;
+				thisCardValue = 11;
+			}
+		
 			total += thisCardValue;
+		}
+		for(let i = 0; i<numAces;i++){
+			if((total >= 21) && (hand.length > 2)){
+				total -= 10;
 			}
 		}
-		$(score).html(total)
+			
+		$(classSelector).text(total);
 		return total;
 	}
 
 	function checkWin(){
 		var playerTotal = calculateTotal(playersHand, 'player');
 		var dealerTotal = calculateTotal(dealersHand, 'dealer');
+
+
 		if ((playerTotal == 21) && (playersHand.length == 2)){
 			$('.game-text').html('BLACKJACK! You win!');
 		}else if((dealerTotal == 21) && (dealersHand.length == 2)){
@@ -128,6 +139,18 @@ $(document).ready(function(){
 	}
 
 
+	function flipCards(){
+		for (let i = 1; i < dealersHand.length; i++){
+			var dealersCards = ".dealer-cards .card-" + (i+1)
+			var cardUsed = dealersHand[i];
+			var cardReplace = '<img src="cards/' + cardUsed + '.png">';
+			$(dealersCards).addClass('flipped');	
+
+			$(dealersCards).html(cardReplace);
+								
+		}
+	}
+
 
 	$('.stand-button').click(function(){
 		var dealerTotal = calculateTotal(dealersHand,'dealer');
@@ -136,7 +159,15 @@ $(document).ready(function(){
 			placeCard('dealer',dealersHand.length,dealersHand[dealersHand.length-1]);
 			dealerTotal = calculateTotal(dealersHand,'dealer');
 		};
-		checkWin();
+
+		// setTimeout(function(){
+		// 	flipCards();
+		// }, 3000);
+		flipCards();
+		setTimeout(function(){
+			checkWin();
+		}, 3000);
+
 	})
 
 
