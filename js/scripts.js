@@ -7,7 +7,7 @@
 
 $(document).ready(function(){
 	const freshDeck = createDeck();
-	var theDeck = freshDeck;
+	var theDeck = freshDeck.slice();
 	var playersHand = [];
 	var dealersHand = [];
 
@@ -25,7 +25,7 @@ $(document).ready(function(){
 	};
 
 	$('.deal-button').click(function(){
-		theDeck = shuffleDeck();
+		resetGame();
 		playersHand.push(theDeck.shift());
 		dealersHand.push(theDeck.shift());
 		playersHand.push(theDeck.shift());
@@ -35,31 +35,38 @@ $(document).ready(function(){
 		placeCard('player',2,playersHand[1]);
 		placeCard('dealer',2,dealersHand[1]);
 		calculateTotal(playersHand,'player');
+		displayTotal(playersHand,'player');
 		calculateTotal(dealersHand,'dealer');
+		setTimeout(function(){
+			startFlip();
+		}, 2000);
 		checkBust();
-
 	});
 
 	function placeCard(who,where,cardToPlace){
 		var classBack = '.' + who + '-cards .card-' + where + ' .back';
 		var classFront = '.' + who + '-cards .card-' + where + ' .front';
 		var classSelector = '.' + who + '-cards .card-' + where;
-		if ((who == 'dealer') && (cardToPlace !== dealersHand[0])){
-			$(classBack).html('<img src="cards/cardback.jpg">');
-			$(classFront).html('<img src="cards/' + cardToPlace + '.png">');
-			$(classSelector).addClass('dealt');
-			// $(classSelector).addClass('dealt');
-			// $(classFront).addClass('dealt');
-		}else{
-			$(classSelector).html('<img src="cards/' + cardToPlace + '.png">');
-			$(classSelector).addClass('dealt');
-		}
+		$(classBack).html('<img src="cards/cardback.jpg">');
+		$(classFront).html('<img src="cards/' + cardToPlace + '.png">');
+		$(classSelector).addClass('dealt');
+		// $(classSelector).html('<img src="cards/' + cardToPlace + '.png">');
+		// $(classSelector).addClass('dealt');
+	}
+
+	function startFlip(){
+		$('.player-cards .card-1').addClass('flipped');
+		$('.player-cards .card-2').addClass('flipped');
+		$('.dealer-cards .card-1').addClass('flipped');		
 	}
 
 	$('.hit-button').click(function(){
 		playersHand.push(theDeck.shift());
 		placeCard('player',playersHand.length,playersHand[playersHand.length-1])
+		console.log(playersHand.length-1)
+		$(`.player-cards .card-${(playersHand.length)}`).addClass('flipped');
 		calculateTotal(playersHand,'player');
+		displayTotal(playersHand,'player');
 		calculateTotal(dealersHand, 'dealer');
 		checkBust();
 
@@ -84,33 +91,36 @@ $(document).ready(function(){
 			total += thisCardValue;
 		}
 		for(let i = 0; i<numAces;i++){
-			if((total >= 21) && (hand.length > 2)){
+			if((total > 21) && (hand.length >= 2)){
 				total -= 10;
 			}
 		}
 			
-		$(classSelector).text(total);
+		// $(classSelector).text(total);
 		return total;
 	}
 
 	function checkWin(){
 		var playerTotal = calculateTotal(playersHand, 'player');
 		var dealerTotal = calculateTotal(dealersHand, 'dealer');
-
-
 		if ((playerTotal == 21) && (playersHand.length == 2)){
 			$('.game-text').html('BLACKJACK! You win!');
 		}else if((dealerTotal == 21) && (dealersHand.length == 2)){
+			displayTotal(dealersHand,'dealer');
 			$('.game-text').html('Dealer wins with BLACKJACK!');
 		}else if (playerTotal > 21){
 			$('.game-text').html('BUST! You lose.');
 		}else if(dealerTotal > 21){
+			displayTotal(dealersHand,'dealer');			
 			$('.game-text').html('Dealer busts! You win.');
 		}else if(playerTotal > dealerTotal){
+			displayTotal(dealersHand,'dealer');						
 			$('.game-text').html('You win!');
 		}else if(dealerTotal > playerTotal){
+			displayTotal(dealersHand,'dealer');			
 			$('.game-text').html('Dealer wins!');
 		}else{
+			displayTotal(dealersHand,'dealer');			
 			$('.game-text').html('Tie game.');
 		}
 
@@ -122,10 +132,14 @@ $(document).ready(function(){
 		if ((playerTotal == 21) && (playersHand.length == 2)){
 			$('.game-text').html('BLACKJACK! You win!');
 		}else if((dealerTotal == 21) && (dealersHand.length == 2)){
+			flipCards();
+			displayTotal(dealersHand,'dealer');
 			$('.game-text').html('Dealer wins with BLACKJACK!');
 		}else if (playerTotal > 21){
 			$('.game-text').html('BUST! You lose.');
 		}else if(dealerTotal > 21){
+			flipCards();
+			displayTotal(dealersHand,'dealer');
 			$('.game-text').html('Dealer busts! You win.');
 		}else{
 			return;
@@ -146,16 +160,8 @@ $(document).ready(function(){
 
 	function flipCards(){
 		for (let i = 1; i < dealersHand.length; i++){
-			var dealersCardsBack = ".dealer-cards .card-" + (i+1) + " .back"
-			var dealersCardsFront = ".dealer-cards .card-" + (i+1) + " .front"
 			var dealersCards = ".dealer-cards .card-" + (i+1);
-			// var cardUsed = dealersHand[i];
-			// var cardReplace = '<img src="cards/' + cardUsed + '.png">';
-			$(dealersCards).addClass('flipped');
-			$(dealersCardsBack).addClass('flipped-back');
-			$(dealersCardsFront).addClass('flipped-front');			
-			// $(dealersCards).html(cardReplace);
-								
+			$(dealersCards).addClass('flipped');							
 		}
 	}
 
@@ -166,20 +172,34 @@ $(document).ready(function(){
 			dealersHand.push(theDeck.shift());
 			placeCard('dealer',dealersHand.length,dealersHand[dealersHand.length-1]);
 			dealerTotal = calculateTotal(dealersHand,'dealer');
+			displayTotal(dealersHand,'dealer');
 		};
 
-		// setTimeout(function(){
-		// 	flipCards();
-		// }, 3000);
 		flipCards();
 		setTimeout(function(){
 			checkWin();
-		}, 3000);
+		}, 1000);
 
 	})
 
+	function resetGame(){
+		playersHand = [];
+		dealersHand = [];
+		$('.card').html('<div class="front"></div><div class="back"></div>');
+		calculateTotal(playersHand,'player');
+		calculateTotal(dealersHand,'dealer');
+		$('.dealer-score').html('');
+		$('.player-score').html('');
+		$('.game-text').html('');
+		theDeck = freshDeck.slice();
+		shuffleDeck();
+		$('.dealer-cards .card').removeClass('flipped');
+	}
 
-
+	function displayTotal(hand,who){
+		var whoseTotal = '.' + who + '-score';
+		$(whoseTotal).html(calculateTotal(hand,who));
+	}
 
 })
 
