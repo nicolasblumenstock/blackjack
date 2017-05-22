@@ -21,19 +21,34 @@
 3. create an element for the player's and dealer's total.
 4. create an element for each card in each hand max of 6.
 5. make a deal hit and stand button. -->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-1 dealer-total text-left">
+				Dealer Total: <span class="dealer-score"></span>
+			</div>
+			<div class="col-sm-4 col-sm-offset-1 player-total text-right">
+				Player Total: <span class="player-score"></span>
+			</div>
+		</div>
+		<div class="row buttons">
+			<div class="col-sm-12 text-center">
+				<button class="deal-button">Deal</button>
+				<button class="bet-button">Bet</button>				
+				<button class="hit-button">Hit</button>
+				<button class="stand-button">Stand</button>
+			</div>
+		</div>
+	</div>
 
 	<div class="container table-skew">
 
 		<div class="row">
-			<div class="col-sm-12 the-table">
+			<div class="col-sm-12 the-table text-center">
 
 				<div class="row">
 					<div class="col-sm-2 filler">
 						
 						<div class="row info">
-							<div class="col-sm-12 dealer-total">
-								Dealer Total: <span class="dealer-score">0</span>
-							</div>
 						</div>
 						<div class="row info">
 							<div class="col-sm-12 deck">
@@ -41,9 +56,7 @@
 							</div>
 						</div>
 						<div class="row info">
-							<div class="col-sm-12 player-total">
-								Player Total: <span class="player-score"></span>
-							</div>
+
 						</div>
 
 						<div class="row">
@@ -114,18 +127,6 @@
 								</div>
 							</div>
 						</div>		
-
-						<div class="row buttons">
-							<div class="col-sm-3 col-sm-offset-1">
-								<button class="btn btn-primary deal-button">Deal</button>
-							</div>
-							<div class="col-sm-3 col-sm-offset-1">
-								<button class="btn btn-danger hit-button">Hit</button>
-							</div>
-							<div class="col-sm-3 col-sm-offset-1">
-								<button class="btn btn-warning stand-button">Stand</button>
-							</div>
-						</div>
 
 					</div>
 				</div>
